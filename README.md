@@ -44,7 +44,7 @@ This script comes in 3 phases for Ubuntu. Each phase involves a reboot
 This script comes in 1 phases for Debian.
 -	Install CoWFC & Reboot
 
-Ubuntu script use PHP 7.1 & MySQL\
+Ubuntu script use PHP 7.2 & MySQL\
 Debian script use PHP 7.4 & MariaDB\
 AWS Ubuntu 16.04 script use PHP 7.0 & MySQL
 
