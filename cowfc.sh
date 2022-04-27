@@ -272,12 +272,12 @@ function install_required_packages() {
     echo "echo "Installing required packages...""
     # Add required package requires packages
     sudo apt install curl git net-tools dnsmasq -y
-    # Add PHP 7.2 repo
-    if [ ! -f "/var/www/.php72-added" ]; then
-        echo "Adding the PHP 7.2 repository. Please follow any prompts."
-        if ! add-apt-repository ppa:ondrej/php; then
+    # Add PHP 7.4 repo
+    if [ ! -f "/var/www/.php74-added" ]; then
+        echo "Adding the PHP 7.4 repository. Please follow any prompts."
+        if ! add-apt-repository ppa:jczaplicki/xenial-php74-temp; then
             apt-get install --force-yes software-properties-common python-software-properties -y
-            add-apt-repository ppa:ondrej/php
+            add-apt-repository ppa:jczaplicki/xenial-php74-temp
         fi
         sleep 2s
         echo "Creating file to tell the script you already added the repo"
@@ -287,13 +287,13 @@ function install_required_packages() {
         reboot
         exit
     else
-        echo "The PHP 7.2 repo is already added. If you believe this to ben an error, please type 'rm -rf /var/www/.php72-added' to remove the file which prevents the repository from being added again."
+        echo "The PHP 7.4 repo is already added. If you believe this to ben an error, please type 'rm -rf /var/www/.php72-added' to remove the file which prevents the repository from being added again."
     fi
     # Fix dpkg problems that happened somehow
     dpkg --configure -a
-    echo "Updating & installing PHP 7.2 onto your system..."
+    echo "Updating & installing PHP 7.4 onto your system..."
     apt-get update
-    apt-get install --force-yes php7.2 -y
+    apt-get install --force-yes php7.4 -y
     # Install the other required packages
     apt-get install --force-yes apache2 python2.7 python-twisted dnsmasq git curl -y
 }
@@ -307,8 +307,8 @@ function config_mysql() {
     # The below sed command has NOT been tested so we don't know if this will work or not.
     #sed -i -e 's/passwordhere/passwordhere/g' /var/www/html/_site/AdminPage.php
     # Next we will install two more packages to make mysql and sqlite work with PHP
-    apt-get install --force-yes php7.2-mysql -y
-    apt-get install --force-yes sqlite php7.2-sqlite3 -y
+    apt-get install --force-yes php7.4-mysql -y
+    apt-get install --force-yes sqlite php7.4-sqlite3 -y
     # Now we will set up our first admin user
     echo "Now we're going to set up our first Admin Portal user."
     read -rp "Please enter the username you wish to use: " firstuser
@@ -483,7 +483,7 @@ if [ "$CANRUN" == "TRUE" ]; then
         # Let's set up Apache now
         create_apache_vh_nintendo
         create_apache_vh_wiimmfi
-        apache_mods     # Enable reverse proxy mod and PHP 7.2
+        apache_mods     # Enable reverse proxy mod and PHP 7.4
         install_website # Install the web contents for CoWFC
         config_mysql    # We will set up the mysql password as "passwordhere" and create our first user
         re              # Set up reCaptcha
@@ -511,7 +511,7 @@ EOF
     # DO NOT PUT COMMANDS UNDER THIS FI
     fi
 else
-    echo "Sorry, you do not appear to be running a supported Opperating System."
+    echo "Sorry, you do not appear to be running a supported Operating System."
     echo "Please make sure you are running Ubuntu 14.04, Ubuntu 16.04 and Ubuntu 20.04, and try again!"
     exit 1
 fi
